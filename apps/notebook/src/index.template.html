@@ -9,7 +9,7 @@
     <link
       id="jupyter-lite-main"
       rel="preload"
-      href="<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf('notebook/bundle') !== -1)[0] %>"
+      href="<%= htmlWebpackPlugin.files.js[0] %>"
       main="index"
       as="script"
     />
@@ -20,17 +20,7 @@
     >
       {}
     </script>
-    <script>
-      (async function () {
-        const { pathname, origin, search, hash } = window.location;
-        if (pathname.match(/(index.html|\/)$/) == null) {
-          window.location.href = `${origin}${pathname}/${search}${hash}`;
-          return;
-        }
-        await import(
-          '../config-utils.js?<%= htmlWebpackPlugin.files.js.filter((f) => f.indexOf("notebook/bundle") !== -1)[0].split("?")[1] %>'
-        );
-      }.call(this));
-    </script>
+    <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
+
   </head>
 </html>

@@ -1,17 +1,17 @@
 // Copyright (c) Jupyter Development Team.
 // Distributed under the terms of the Modified BSD License.
 
+import "./override-jupyter-config";
+
 import { PageConfig/*, URLExt*/ } from '@jupyterlab/coreutils';
-/*(window as any).__webpack_public_path__ = URLExt.join(
-  PageConfig.getBaseUrl(),
-  'example/'
-);*/
 
 import { JupyterLiteServer } from '@jupyterlite/server';
 
+import {
+  nullTranslator
+} from '@jupyterlab/translation';
 
 const serverExtensions = [
-  import('@jupyterlite/javascript-kernel-extension'),
   import('@jupyterlite/pyolite-kernel-extension'),
   import('@jupyterlite/server-extension')
 ];
@@ -22,13 +22,12 @@ import '@jupyterlab/completer/style/index.css';
 import '@jupyterlab/documentsearch/style/index.css';
 import '@jupyterlab/notebook/style/index.css';
 import '@jupyterlab/theme-light-extension/style/theme.css';
-import '../index.css';
+import './index.css';
 
 import { CommandRegistry } from '@lumino/commands';
 
 import { Widget,Panel } from '@lumino/widgets';
 
-import { ServiceManager } from '@jupyterlab/services';
 import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
 import {ReactiveToolbar} from '@jupyterlab/apputils';
 
@@ -50,7 +49,7 @@ import { editorServices } from '@jupyterlab/codemirror';
 
 import { DocumentManager } from '@jupyterlab/docmanager';
 
-import { DocumentRegistry } from '@jupyterlab/docregistry';
+import { /*Context,*/ DocumentRegistry } from '@jupyterlab/docregistry';
 
 import {
   standardRendererFactories as initialFactories,
@@ -83,7 +82,7 @@ import * as path from 'path';
 }
 
 
-export async function main(): Promise<void> {
+export default async function init(notebookSource:string,parentElement:HTMLElement): Promise<void> {
 
   //@ts-ignore
   const jupyterLiteServer = new JupyterLiteServer({});
@@ -106,10 +105,7 @@ export async function main(): Promise<void> {
   await serviceManager.kernelspecs.ready;
   await serviceManager.kernelspecs.refreshSpecs();
   console.log("kernels ready",serviceManager.kernelspecs.specs);
-    await createApp(serviceManager);
-}
 
-async function createApp(manager: ServiceManager.IManager): Promise<void> {
   // Initialize the command registry with the bindings.
   const commands = new CommandRegistry();
   const useCapture = true;
@@ -139,7 +135,7 @@ async function createApp(manager: ServiceManager.IManager): Promise<void> {
   const docRegistry = new DocumentRegistry();
   const docManager = new DocumentManager({
     registry: docRegistry,
-    manager,
+    manager: serviceManager,
     opener
   });
   const mFactory = new NotebookModelFactory({});
@@ -162,7 +158,7 @@ async function createApp(manager: ServiceManager.IManager): Promise<void> {
 
   
 
-  const notebookURL:URL = new URL(PageConfig.getOption('notebookURL'));
+  const notebookURL:URL = new URL(notebookSource,document.location.href);
   const notebookResponse=await fetch(notebookURL.toString());
   const notebookText= await notebookResponse.text();
   const notebookPath=path.basename(notebookURL.pathname);
@@ -180,7 +176,7 @@ async function createApp(manager: ServiceManager.IManager): Promise<void> {
   console.debug('Got source file!');
 
   //@ts-ignore
-  const savedFile=await manager.contents.save(notebookPath,fileContents);
+  const savedFile=await serviceManager.contents.save(notebookPath,fileContents);
   console.log("Saved:",savedFile);
   const nbWidget = docManager.open(notebookPath) as NotebookPanel;
   
@@ -213,15 +209,10 @@ async function createApp(manager: ServiceManager.IManager): Promise<void> {
 
   const panel = new Panel();
   panel.id = 'main';
-//  panel.orientation = 'vertical';
-//  panel.spacing = 0;
-//  SplitPanel.setStretch(customToolbar, 0);
-//  SplitPanel.setStretch(nbWidget, 1);
-//  panel.addWidget(customToolbar);
   panel.addWidget(nbWidget);
   // Attach the panel to the DOM.
-  Widget.attach(panel, document.body);
-  Widget.attach(completer, document.body);
+  Widget.attach(panel, parentElement);
+  Widget.attach(completer,parentElement);
 
   // Handle resize events.
   window.addEventListener('resize', () => {
@@ -237,17 +228,21 @@ async function createApp(manager: ServiceManager.IManager): Promise<void> {
   buttons.pop();// ignore the final element which is something to do with popups
   buttons.forEach(x => {x.parent=null;x.dispose()});
 
+  // setup toolbar, keyboard shortcuts etc.
   SetupCommands(commands, nbWidget.toolbar, nbWidget, handler);
+
+  // add execution indicator at end of the thing
   nbWidget.toolbar.addItem("spacer",ReactiveToolbar.createSpacerItem());
-
-  let indicator=new ExecutionIndicator();
-  indicator.model.attachNotebook({
-    content: nbWidget.content,
-    context: sessionContext
-  });
+  let indicator=ExecutionIndicator.createExecutionIndicatorItem(nbWidget,nullTranslator,undefined);
   nbWidget.toolbar.addItem("Kernel status:",indicator);
-
+  indicator.update();
   console.debug('Example started!');
 }
 
+export function main()
+{
+  init("test.ipynb",document.body);
+}
+
+//main();
 window.addEventListener('load', main);

@@ -16,6 +16,6 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es2017",
+    "target": "es2017"
   }
 }
