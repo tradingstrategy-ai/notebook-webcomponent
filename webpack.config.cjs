@@ -23,11 +23,7 @@ const allHtmlPlugins=[];
 let topLevelBuild=path.resolve("./dist");
 let appBuildDir=path.resolve("./dist",APP_TO_BUILD);
 
-
-
 fs.mkdirSync(topLevelBuild,{recursive:true})
-
-
 
 /**
  * Define a custom plugin to ensure schemas are statically compiled
@@ -74,6 +70,10 @@ function makeApp()
     const { jupyterlab,jupyterlite}
         =   packageData;
     const sourceDir=path.dirname(sourceJSON);
+
+
+
+
     if(jupyterlab!==undefined && jupyterlite!=undefined)
     {
         console.log(`Reading ${sourceDir} to build html:${htmlDir} and Lib:${libDir}`)
@@ -117,6 +117,7 @@ function makeApp()
                 new HtmlWebpackPlugin({
                 inject: false,
                 minify: false,
+                showErrors:true,
                 filename: path.resolve(htmlDir,pageBase+".html"),
                 template: templateFile,
                 })
@@ -132,6 +133,8 @@ module.exports = [
     merge(baseConfig,{
     entry: allEntryPoints,
     mode:"production",
+    devtool:"source-map",
+    target:"web",
     module: {
       rules: [
           {
@@ -161,23 +164,40 @@ module.exports = [
           loader: 'ts-loader',
           exclude: /node_modules/,
         },
+        {
+            test: /\.(svelte)$/,
+            use: 'svelte-loader'
+          },
+          {
+            // required to prevent errors from Svelte on Webpack 5+, omit on Webpack 4
+            test: /node_modules\/svelte\/.*\.mjs$/,
+            resolve: {
+              fullySpecified: false
+            }
+          }
+
       ],
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.js','.svelte','.cjs'],
+      alias: {
+        svelte: path.resolve('node_modules', 'svelte')
+      },
+      mainFields: ['svelte', 'browser', 'module', 'main']      
+    },
+    experiments: {
+      outputModule: true,
     },
     output: {
         publicPath: "auto",
         path: appBuildDir+"/build",
-        library:"notebook",
-/*        library: {
-            type: 'var',
-            name: ['_JUPYTERLAB', 'CORE_OUTPUT'],
-        },*/
+        module:true,
+        libraryTarget:"module",
         filename: '[name].js?_=[contenthash:7]',
-        chunkFilename: '[name].[contenthash:7].js',
+        asyncChunks:false,
+//        chunkFilename: '[name].[contenthash:7].js',
         // to generate valid wheel names
-        assetModuleFilename: '[name][ext][query]',        
+        assetModuleFilename: '[name][ext][query]',
     },
     optimization:
     {
@@ -185,15 +205,6 @@ module.exports = [
     },
     plugins:
     [
-/*        new ModuleFederationPlugin({
-            library: {
-              type: 'var',
-              name: ['_JUPYTERLAB', 'CORE_LIBRARY_FEDERATION'],
-            },
-            name: 'CORE_FEDERATION',
-            shared: allSharedDeps,
-          }),
-          new CompileSchemasPlugin(),           */
         ...allHtmlPlugins,],
   }),
 ].concat(...allAssetConfig);

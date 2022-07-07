@@ -7,18 +7,29 @@ body {
   background: white;
   margin: 0;
   padding: 0;
+  overflow-x:hidden;
+  overflow-y:auto;
 }
 
 #main {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  right: 4px;
-  bottom: 4px;
+  position: relative;
+  width:100%;
 }
 
 .jp-NotebookPanel {
   border-bottom: 1px solid #e0e0e0;
+  height:fit-content;
+  width:100%;
+}
+
+.jp-Toolbar
+{
+  position:relative;
+}
+
+.jp-Notebook
+{
+  overflow:hidden;
 }
 
 .notebookCommandPalette {

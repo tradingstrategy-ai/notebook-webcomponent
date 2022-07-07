@@ -1,5 +1,10 @@
-const JUPYTER_CONFIG_ID = 'jupyter-config-data';
+declare var __webpack_public_path__:any;
 
+
+const JUPYTER_CONFIG_ID = 'jupyter-config-data';
+console.log(import.meta.url);
+const pypiLink=__webpack_public_path__+"pypi/all.json";
+const baseURL=new URL("../",__webpack_public_path__).toString();
 export default function init(config?:object|string|undefined)
 {
     if(!config)
@@ -7,7 +12,7 @@ export default function init(config?:object|string|undefined)
         config={
                   "appName": "Notebook",
                   "appVersion": "0.1.0-beta.9",
-                  "baseUrl": "./",
+                  "baseUrl": baseURL,
                   "appUrl": "./",
                   "federated_extensions": [],
                   "fullLabextensionsUrl": "./extensions",
@@ -16,13 +21,14 @@ export default function init(config?:object|string|undefined)
                   "licensesUrl": "./lab/api/licenses",
                   "mathjaxConfig": "TeX-AMS_CHTML-full,Safe",
                   "mathjaxUrl": "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js",
-/*                  "litePluginSettings":
+                  "litePluginSettings":
                   {
                     "@jupyterlite/pyolite-kernel-extension:kernel":
                     {
-                        pipliteUrls:["lib/pypi/all.json"]
+                        "pyodideUrl": "https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.mjs",
+                        "pipliteUrls":[pypiLink.toString()]
                     }
-                  }*/
+                  }
         };              
     }
     if(typeof config === "object")

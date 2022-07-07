@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>JupyterLite</title>
     <meta charset="utf-8" />
@@ -8,19 +8,22 @@
     <link rel="manifest" href="../manifest.webmanifest" />
     <link
       id="jupyter-lite-main"
-      rel="preload"
+      rel="modulePreload"
       href="<%= htmlWebpackPlugin.files.js[0] %>"
-      main="index"
-      as="script"
     />
-    <script
-      id="jupyter-config-data"
-      type="application/json"
-      data-jupyter-lite-root=".."
-    >
-      {}
+    <script type="module" >
+      import registerComponent from "./<%= htmlWebpackPlugin.files.js[0] %>";
+      registerComponent();
     </script>
-    <script src="<%= htmlWebpackPlugin.files.js[0] %>"></script>
+
 
   </head>
-</html>
+
+  <body>
+    <H1> Example notebook below here</H1>
+    <jupyter-notebook src="test.ipynb">
+    </jupyter-notebook>
+    <H1>And above here</H1>
+    </body>
+    
+  </html>

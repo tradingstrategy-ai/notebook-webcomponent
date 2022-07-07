@@ -1,0 +1,23 @@
+diff --git a/node_modules/@jupyterlite/pyolite-kernel/lib/worker.js b/node_modules/@jupyterlite/pyolite-kernel/lib/worker.js
+index f995efe..f0a086f 100644
+--- a/node_modules/@jupyterlite/pyolite-kernel/lib/worker.js
++++ b/node_modules/@jupyterlite/pyolite-kernel/lib/worker.js
+@@ -165,8 +165,16 @@ export class PyoliteRemoteKernel {
+     }
+     async initRuntime(options) {
+         const { pyodideUrl, indexUrl } = options;
+-        importScripts(pyodideUrl);
+-        this._pyodide = await self.loadPyodide({ indexURL: indexUrl });
++        let loadAsModule=pyodideUrl.endsWith(".mjs");
++        if(loadAsModule)
++        {
++            let pyodideModule=await import(/* webpackIgnore: true */ pyodideUrl);
++            this._pyodide = await pyodideModule.loadPyodide({ indexURL: indexUrl });
++        }else
++        {
++            importScripts(pyodideUrl);
++            this._pyodide = await self.loadPyodide({ indexURL: indexUrl });
++        }
+     }
+     async initPackageManager(options) {
+         if (!this._options) {

@@ -82,11 +82,10 @@ import * as path from 'path';
 }
 
 
-export default async function init(notebookSource:string,parentElement:HTMLElement): Promise<void> {
+async function init(notebookSource:string,parentElement:HTMLElement): Promise<void> {
 
   //@ts-ignore
   const jupyterLiteServer = new JupyterLiteServer({});
-
   let litePluginsToRegister:any=[];
   // Add the base serverlite extensions
   const baseServerExtensions = await Promise.all(serverExtensions);
@@ -207,18 +206,6 @@ export default async function init(notebookSource:string,parentElement:HTMLEleme
   // Hide the widget when it first loads.
   completer.hide();
 
-  const panel = new Panel();
-  panel.id = 'main';
-  panel.addWidget(nbWidget);
-  // Attach the panel to the DOM.
-  Widget.attach(panel, parentElement);
-  Widget.attach(completer,parentElement);
-
-  // Handle resize events.
-  window.addEventListener('resize', () => {
-    panel.update();
-  });
-
   let buttons=[]
   let c=nbWidget.toolbar.children();
   for(let x=c.next();x;x=c.next())
@@ -236,13 +223,66 @@ export default async function init(notebookSource:string,parentElement:HTMLEleme
   let indicator=ExecutionIndicator.createExecutionIndicatorItem(nbWidget,nullTranslator,undefined);
   nbWidget.toolbar.addItem("Kernel status:",indicator);
   indicator.update();
+
+  const panel = new Panel();
+  panel.id = 'notebook_main';
+  panel.addWidget(nbWidget);
+  // Attach the panel to the DOM.
+  Widget.attach(panel, parentElement);
+  Widget.attach(completer,parentElement);
+
+  // Handle resize events.
+  window.addEventListener('resize', () => {
+    panel.update();
+  });
+
+  // fix up the divs so that this scrolls nicely in the page
+  // NOTE: Don't try and do this in css, because jupyterlab adds 
+  // style elements that override it
+  window.setTimeout(()=>{
+    let all_divs=parentElement.getElementsByTagName('div');
+    for(let d of all_divs)
+    {
+      if(d.id=='notebook_main' || d.classList.contains("jp-Cell") || d.classList.contains("jp-Notebook") || d.classList.contains("jp-NotebookPanel") || d.classList.contains("jp-Toolbar") || d.classList.contains("lm-Panel"))
+      {
+        d.style.position="relative";
+        d.style.height="fit-content";
+        d.style.top="0px";
+      }
+    }
+  },0);
+
   console.debug('Example started!');
 }
 
-export function main()
+
+export default function registerComponent()
 {
-  init("test.ipynb",document.body);
+  customElements.define('jupyter-notebook',
+    class extends HTMLElement {
+        constructor() {
+          super();
+
+          this.style.height="fit-content";
+          this.style.width="100%"
+          this.style.display="block";
+          let source=this.getAttribute("src");
+
+/*          const shadow = this.attachShadow({mode: 'open'});
+          let div=document.createElement("div");
+          div.style.height="fit-content";
+          div.style.width="100%"
+          div.style.display="block";
+          div.style.overflow="scroll";
+          shadow.appendChild(div);*/
+          if(source)
+          {
+            init(source,this);
+          }
+      }
+    }
+  );
+
 }
 
-//main();
-window.addEventListener('load', main);
+

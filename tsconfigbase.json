@@ -7,8 +7,8 @@
     "esModuleInterop": true,
     "incremental": true,
     "jsx": "react",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "es2020",
+    "moduleResolution": "nodenext",
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
@@ -16,6 +16,6 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es2017"
+    "target": "es2020"
   }
 }
