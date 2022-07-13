@@ -1,0 +1,22 @@
+diff --git a/node_modules/@jupyterlite/server-extension/lib/index.js b/node_modules/@jupyterlite/server-extension/lib/index.js
+index 2c49457..c95376c 100644
+--- a/node_modules/@jupyterlite/server-extension/lib/index.js
++++ b/node_modules/@jupyterlite/server-extension/lib/index.js
+@@ -136,12 +136,15 @@ const contentsRoutesPlugin = {
+ /**
+  * A plugin installing the service worker.
+  */
++
++const serviceWorkerPluginID='@jupyterlite/server-extension:service-worker';
+ const serviceWorkerPlugin = {
+-    id: '@jupyterlite/server-extension:service-worker',
++    id: serviceWorkerPluginID,
+     autoStart: true,
+     provides: IServiceWorkerRegistrationWrapper,
+     activate: (app) => {
+-        return new ServiceWorkerRegistrationWrapper();
++        const config = JSON.parse(PageConfig.getOption('litePluginSettings') || '{}')[serviceWorkerPluginID] || {};        
++        return new ServiceWorkerRegistrationWrapper(config);
+     },
+ };
+ /**

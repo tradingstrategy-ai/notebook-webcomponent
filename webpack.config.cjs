@@ -1,5 +1,7 @@
 const APP_TO_BUILD="notebook";
 
+
+const fetch=require("sync-fetch");
 const path = require("path");
 const webpack = require('webpack');
 const Handlebars = require('handlebars');
@@ -11,7 +13,14 @@ const Build = require('@jupyterlab/builder').Build;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { isNewExpression } = require("typescript");
 const { forEach } = require("lodash");
+const { assert } = require("console");
 const { ModuleFederationPlugin } = webpack.container;
+
+const serverDir=path.dirname(require.resolve("@jupyterlite/server"));
+const serverJSON=require(path.resolve(serverDir,"../package.json"));
+const jupyterLiteVersion=serverJSON.version.replace("-beta.","b");
+
+
 
 const allEntryPoints={};
 
@@ -24,6 +33,24 @@ let topLevelBuild=path.resolve("./dist");
 let appBuildDir=path.resolve("./dist",APP_TO_BUILD);
 
 fs.mkdirSync(topLevelBuild,{recursive:true})
+
+/**
+ * Define a custom plugin to copy any extra wheel files across and regenerate the wheel index
+ * 
+ */
+
+ class CopyWheelsPlugin {
+  apply(compiler)  {
+    compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
+        console.log("EMITTED")
+/*      exec('<path to your post-build script here>', (err, stdout, stderr) => {
+        if (stdout) process.stdout.write(stdout);
+        if (stderr) process.stderr.write(stderr);        
+      });*/
+    });
+  }
+};
+
 
 /**
  * Define a custom plugin to ensure schemas are statically compiled
@@ -85,7 +112,6 @@ function makeApp()
         fs.mkdirSync(libDir,{recursive:true});
         // copy extra files for the html example across
         fs.copySync(`${sourceDir}/extrafiles`,htmlDir,{});
-        
         // copy source to build folder
         if(fs.existsSync(`${sourceDir}/src`))
         {
@@ -123,11 +149,25 @@ function makeApp()
                 })
             );
         }
+
+        // get the jupyterlite service worker from github (it isn't on node right now)
+        const workerURL=`https://raw.githubusercontent.com/jupyterlite/jupyterlite/v${jupyterLiteVersion}/app/services.js`;
+        const worker=fetch(workerURL);
+        const workerBody=worker.text();
+        console.log("Copying service worker")
+        if((worker.status/100) != 2)
+        {
+          throw new Error(`Couldn't download service worker from: ${workerURL}. Error: ${worker.status}`)
+        }
+        fs.writeFileSync(`${appBuildDir}/services.js`,workerBody);
+
+        
     }
 }
 
 makeApp();
 console.log(allEntryPoints);
+
 
 module.exports = [
     merge(baseConfig,{
@@ -205,6 +245,6 @@ module.exports = [
     },
     plugins:
     [
-        ...allHtmlPlugins,],
+        ...allHtmlPlugins,new CopyWheelsPlugin()],
   }),
 ].concat(...allAssetConfig);

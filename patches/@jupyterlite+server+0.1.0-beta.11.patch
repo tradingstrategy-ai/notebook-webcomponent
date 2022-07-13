@@ -1,0 +1,36 @@
+diff --git a/node_modules/@jupyterlite/server/lib/serviceworker.js b/node_modules/@jupyterlite/server/lib/serviceworker.js
+index fca1ceb..d33f222 100644
+--- a/node_modules/@jupyterlite/server/lib/serviceworker.js
++++ b/node_modules/@jupyterlite/server/lib/serviceworker.js
+@@ -1,7 +1,8 @@
+ import { Signal } from '@lumino/signaling';
+ import { PageConfig, URLExt } from '@jupyterlab/coreutils';
+ export class ServiceWorkerRegistrationWrapper {
+-    constructor() {
++    constructor(config) {
++        this._config=config;
+         this._registration = null;
+         this._registrationChanged = new Signal(this);
+         this.initialize();
+@@ -19,6 +20,12 @@ export class ServiceWorkerRegistrationWrapper {
+         return this._registration !== null;
+     }
+     async initialize() {
++        if(this._config["disabled"])
++        {
++            // don't install service worker
++            return;
++        }
++        const workerUrl=this._config["workerUrl"]|| URLExt.join(PageConfig.getBaseUrl(), 'services.js');
+         if (!('serviceWorker' in navigator)) {
+             console.error('ServiceWorker registration failed: Service Workers not supported in this browser');
+             this.setRegistration(null);
+@@ -30,7 +37,7 @@ export class ServiceWorkerRegistrationWrapper {
+             }
+         }
+         return await navigator.serviceWorker
+-            .register(URLExt.join(PageConfig.getBaseUrl(), 'services.js'))
++            .register(workerUrl)
+             .then((registration) => {
+             this.setRegistration(registration);
+         }, (err) => {
