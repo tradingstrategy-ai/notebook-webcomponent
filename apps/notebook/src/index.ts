@@ -95,10 +95,19 @@ export default function registerComponent()
           }
           if(workerUrl)
           {
-            config["litePluginSettings"]["@jupyterlite/server-extension:service-worker"]=
+            if(workerUrl=="disabled")
             {
-              "workerUrl":workerUrl
-            };
+              config["litePluginSettings"]["@jupyterlite/server-extension:service-worker"]=
+              {
+                "disabled":true
+              }              
+            }else
+            {
+              config["litePluginSettings"]["@jupyterlite/server-extension:service-worker"]=
+              {
+                "workerUrl":workerUrl
+              };
+            }
           }
         // need to override config before we import index.js, as config gets loaded 
         // during import of modules
