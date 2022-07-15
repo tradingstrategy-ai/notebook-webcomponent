@@ -235,7 +235,7 @@ module.exports = [
         libraryTarget:"module",
         filename: '[name].js?_=[contenthash:7]',
         asyncChunks:false,
-//        chunkFilename: '[name].[contenthash:7].js',
+        chunkFilename: '[name].[contenthash:7].js',
         // to generate valid wheel names
         assetModuleFilename: '[name][ext][query]',
     },

@@ -1,8 +1,9 @@
 
 declare var __webpack_public_path__:any;
 
+
 const JUPYTER_CONFIG_ID = 'jupyter-config-data';
-console.log(import.meta.url);
+console.log("WPP:",__webpack_public_path__);
 const pypiLink=new URL("./pypi/all.json",__webpack_public_path__).toString();
 const baseURL=new URL("../",__webpack_public_path__).toString();
 

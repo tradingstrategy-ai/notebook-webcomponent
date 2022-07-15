@@ -4,6 +4,7 @@
     "private": true,
     "main": "./dist/notebook/build/notebook.js",
     "module": "./dist/notebook/build/notebook.js",
+    "svelte": "./dist/notebook/svelte.js",
     "type": "module",
     "files": [
         "dist/notebook/*"
