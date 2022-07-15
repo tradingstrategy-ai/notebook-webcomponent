@@ -6,6 +6,10 @@
     "module": "./dist/notebook/build/notebook.js",
     "svelte": "./dist/notebook/svelte.js",
     "type": "module",
+    "engines": {
+        "yarn": ">=1.22.19",
+        "npm":"Build doesn't work with npm"
+      },
     "files": [
         "dist/notebook/*"
     ],
@@ -14,7 +18,9 @@
         "build:prod": "yarn clean && yarn build --mode=production",
         "clean": "rimraf build **/build",
         "watch": "webpack --config webpack.config.watch.js",
-        "postinstall": "npx patch-package; "
+        "postinstall": "npx patch-package;",
+        "install":"echo doing install here",
+        "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('Use yarn for installing: https://yarnpkg.com/en/docs/install')\" && yarn policies set-version ^1.22.19 "
     },
     "dependencies": {
         "es6-promise": "~4.2.8",

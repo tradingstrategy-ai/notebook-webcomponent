@@ -1538,7 +1538,7 @@
 
 "@jupyterlite/application-extension@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/application-extension/-/application-extension-0.1.0-beta.11.tgz#b3f5720e9718121211295b3cd2287b5862244145"
+  resolved "https://registry.npmjs.org/@jupyterlite/application-extension/-/application-extension-0.1.0-beta.11.tgz"
   integrity sha512-2Tmga7KOrSIFrHHpjOXw+ibfCO3gUbe5rnKJcpnw0hDhnZcstr1fFoP9kzCCE4aaNVEV/1X4qy6JOZEqXS4zNQ==
   dependencies:
     "@jupyterlab/application" "~3.4.3"
@@ -1558,7 +1558,7 @@
 
 "@jupyterlite/application@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/application/-/application-0.1.0-beta.11.tgz#cd0fbd55ab602d8cb75989b826468cd57c378b49"
+  resolved "https://registry.npmjs.org/@jupyterlite/application/-/application-0.1.0-beta.11.tgz"
   integrity sha512-6tn6n4higBtgHzfxh6xG3jNhlBo83GN8KsQZJ37YbJzKphDITfELseHhYobHWv1M7VRhbWkiXKABGrNkLBYClg==
   dependencies:
     "@jupyterlab/application" "~3.4.3"
@@ -1571,7 +1571,7 @@
 
 "@jupyterlite/contents@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/contents/-/contents-0.1.0-beta.11.tgz#c777208d0a201e34029f26a9b6db81f38d7a7dad"
+  resolved "https://registry.npmjs.org/@jupyterlite/contents/-/contents-0.1.0-beta.11.tgz"
   integrity sha512-A7ASBuRmeDp1Qv3CIIVqZfQZ4qrsUNnBP1I/92kYd6AzPPr2sImKJK+1ia1reFW7NjYGRLbHNyxoW/rPzd3BGA==
   dependencies:
     "@jupyterlab/nbformat" "~3.4.3"
@@ -1583,7 +1583,7 @@
 
 "@jupyterlite/iframe-extension@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/iframe-extension/-/iframe-extension-0.1.0-beta.11.tgz#5435740ad82941ffd24704a503c96be4855ba360"
+  resolved "https://registry.npmjs.org/@jupyterlite/iframe-extension/-/iframe-extension-0.1.0-beta.11.tgz"
   integrity sha512-MkiaxpLaw3g0rRDnZqwQIc9s+zIwzqfQ8DlImtzQCeyrq7WWbPBjZLpQHgwnZ1m/f9F4QKv/puvXp5lzo3BHyA==
   dependencies:
     "@jupyterlab/rendermime-interfaces" "~3.4.3"
@@ -1592,7 +1592,7 @@
 
 "@jupyterlite/javascript-kernel-extension@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/javascript-kernel-extension/-/javascript-kernel-extension-0.1.0-beta.11.tgz#f410de4f38c9d09a74c8b8a7882d4fcdf0107a1b"
+  resolved "https://registry.npmjs.org/@jupyterlite/javascript-kernel-extension/-/javascript-kernel-extension-0.1.0-beta.11.tgz"
   integrity sha512-hb+5WtfMzjTRHt6iU2dfh6XgtJrg7nXZrYQbe9xaaM97503wcQABpc0C9oUdixhRXsVkvDj3JdcLMXV9uw6fGw==
   dependencies:
     "@jupyterlab/coreutils" "~5.4.3"
@@ -1602,14 +1602,14 @@
 
 "@jupyterlite/javascript-kernel@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/javascript-kernel/-/javascript-kernel-0.1.0-beta.11.tgz#8f2238ba88493aff766a71f2c033ee065bf37695"
+  resolved "https://registry.npmjs.org/@jupyterlite/javascript-kernel/-/javascript-kernel-0.1.0-beta.11.tgz"
   integrity sha512-ZnbV1+ch/Wc5i29JaQ4he67djpKhtqfw0n+T4t7c0WRupqOkSMH+q2rMzCvin4cFrIzCExe47bcKbwGldDEtQQ==
   dependencies:
     "@jupyterlite/kernel" "^0.1.0-beta.11"
 
 "@jupyterlite/kernel@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/kernel/-/kernel-0.1.0-beta.11.tgz#55406cddbc9ca3bcd166cc0fe93a9f46c5d0e7bb"
+  resolved "https://registry.npmjs.org/@jupyterlite/kernel/-/kernel-0.1.0-beta.11.tgz"
   integrity sha512-iRKCVjl/sL75awqpN9eUpCJ72v0z02a2PUzdOtY8bwhKGb09KZeXChb4sfGBNv1xm8VnvdKLMx/lWdFNH3ioFA==
   dependencies:
     "@jupyterlab/coreutils" "~5.4.3"
@@ -1624,14 +1624,14 @@
 
 "@jupyterlite/licenses@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/licenses/-/licenses-0.1.0-beta.11.tgz#28c59493d30021d9eab6e1da10bb36f0f2688ba0"
+  resolved "https://registry.npmjs.org/@jupyterlite/licenses/-/licenses-0.1.0-beta.11.tgz"
   integrity sha512-i1CzOgPb2I7QIPAqHi/hmLZzaj8WgfMxxj1+3HyIISQ+yj2QvwAp3wj07rzKY8kv8utAuooMKk0FqLURGx68vg==
   dependencies:
     "@jupyterlab/coreutils" "^5.4.3"
 
 "@jupyterlite/localforage@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/localforage/-/localforage-0.1.0-beta.11.tgz#70a0b76b85d3f2702f9267aa496b4df687359212"
+  resolved "https://registry.npmjs.org/@jupyterlite/localforage/-/localforage-0.1.0-beta.11.tgz"
   integrity sha512-89d/4zbe5zpa4j74KFgoMKJ9/6vmWUyVvm+I+9qErkCdy+y7TJjXk3maq79nBmZ3EZRi8QC6FJTM/ejtswyaXg==
   dependencies:
     "@jupyterlab/coreutils" "^5.4.3"
@@ -1641,7 +1641,7 @@
 
 "@jupyterlite/pyolite-kernel-extension@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/pyolite-kernel-extension/-/pyolite-kernel-extension-0.1.0-beta.11.tgz#cca27a28689d2498b13ab1929484b00c7b5409c8"
+  resolved "https://registry.npmjs.org/@jupyterlite/pyolite-kernel-extension/-/pyolite-kernel-extension-0.1.0-beta.11.tgz"
   integrity sha512-1f2eqvBbildLpxjwdN61nTC4NnwuJuCnVHk/UP7TfnGzOL7lxbvnhKjISTQE9CWcDjn+almWJhFEfl/RCrRwZQ==
   dependencies:
     "@jupyterlab/coreutils" "~5.4.3"
@@ -1651,7 +1651,7 @@
 
 "@jupyterlite/pyolite-kernel@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/pyolite-kernel/-/pyolite-kernel-0.1.0-beta.11.tgz#96bb37d63df24fa484d2ccc45f19b2085d9074e8"
+  resolved "https://registry.npmjs.org/@jupyterlite/pyolite-kernel/-/pyolite-kernel-0.1.0-beta.11.tgz"
   integrity sha512-rW9LrsGBjn3YR9kODZ8c2SeX2FpVLTSEvMCoquFU28cY6i3jYFVQXtPXKATHVnrU6K5ssxzNOiIOHq4L7wRhFw==
   dependencies:
     "@jupyterlite/contents" "^0.1.0-beta.11"
@@ -1660,7 +1660,7 @@
 
 "@jupyterlite/server-extension@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/server-extension/-/server-extension-0.1.0-beta.11.tgz#efd1c12a5bd32a54998c3736afd55e1fe01e1e18"
+  resolved "https://registry.npmjs.org/@jupyterlite/server-extension/-/server-extension-0.1.0-beta.11.tgz"
   integrity sha512-qaU2bwMZCom2IwHC3zfzdXJa9BYLpGJ7C50Tq/MWtPhLvAjz3N93jsTr2iLmnuNkI8wAN3Z+q03/MryDbUc+fw==
   dependencies:
     "@jupyterlab/coreutils" "~5.4.3"
@@ -1674,7 +1674,7 @@
 
 "@jupyterlite/server@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/server/-/server-0.1.0-beta.11.tgz#35cd98695a09c22a026a85f69c53c0f3203e3bfe"
+  resolved "https://registry.npmjs.org/@jupyterlite/server/-/server-0.1.0-beta.11.tgz"
   integrity sha512-vf9v/HsgCZhb1YYga/UkwQDS+Mke5nPwh15GX20392vgdEc+xJcGok3fA3b3AbJYwbEDfqE4DtrJZHd+hVCcng==
   dependencies:
     "@jupyterlab/coreutils" "~5.4.3"
@@ -1694,7 +1694,7 @@
 
 "@jupyterlite/session@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/session/-/session-0.1.0-beta.11.tgz#dd9105d799b6c035ac97678e59e2bf00e82849fc"
+  resolved "https://registry.npmjs.org/@jupyterlite/session/-/session-0.1.0-beta.11.tgz"
   integrity sha512-bvbrTMhQocmlmMVepDQ4SQSnQG4OvcV7+ZFFVVFEVl2PwJN/QSpY7Y9HV6kn8MaJAp+xj6IKysQEWMrekm8UQg==
   dependencies:
     "@jupyterlab/coreutils" "^5.4.2"
@@ -1705,7 +1705,7 @@
 
 "@jupyterlite/settings@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/settings/-/settings-0.1.0-beta.11.tgz#584f569b623aa97b7bfa2d6285cf77d341409c47"
+  resolved "https://registry.npmjs.org/@jupyterlite/settings/-/settings-0.1.0-beta.11.tgz"
   integrity sha512-5b6Uqtq3nxfuEdyS/VDT+u1/DKouR7sLK+xMC0rumsDsyzRBOFYik7w/06FiJNPGGacUpRNvkTUKXGuHXztHHQ==
   dependencies:
     "@jupyterlab/coreutils" "~5.4.3"
@@ -1717,7 +1717,7 @@
 
 "@jupyterlite/translation@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/translation/-/translation-0.1.0-beta.11.tgz#e30bd3ea6690038de4d027bcffe7a99ed6fb17e1"
+  resolved "https://registry.npmjs.org/@jupyterlite/translation/-/translation-0.1.0-beta.11.tgz"
   integrity sha512-axda8MdI8buduENoBsgJYQB3zDPs/hsT1M4BD8uQU9zT1mII0vjFrKVqq3/1jRAnoRJ+ipieXvNuWdLn3ooNzw==
   dependencies:
     "@jupyterlab/coreutils" "~5.4.3"
@@ -1725,14 +1725,14 @@
 
 "@jupyterlite/types@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/types/-/types-0.1.0-beta.11.tgz#9aefb71bd7a55e9a6358671ca0e34cbf13accb36"
+  resolved "https://registry.npmjs.org/@jupyterlite/types/-/types-0.1.0-beta.11.tgz"
   integrity sha512-mJ0nQ8P/XPn2ooNo3/PWA3gcdmEoRb98QXh55XCGphyUuCuYez9Gd39xaTB1+RPzEoyFoKhOON894D9amLqK+g==
   dependencies:
     "@lumino/coreutils" "^1.12.0"
 
 "@jupyterlite/ui-components@^0.1.0-beta.11":
   version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@jupyterlite/ui-components/-/ui-components-0.1.0-beta.11.tgz#4457dd0f5cace2f0956ca8786b90a796756b9ec5"
+  resolved "https://registry.npmjs.org/@jupyterlite/ui-components/-/ui-components-0.1.0-beta.11.tgz"
   integrity sha512-6SJgYOsvcqEx09dOwb5NWunNG5lMt8KQqX0N8m0AqqVmfPNey9Dx4+hVadVu6CHYYZ2Hh2tcoJhyAcJvVB6ERw==
   dependencies:
     "@jupyterlab/ui-components" "^3.4.3"
@@ -3205,7 +3205,7 @@ dashdash@^1.12.0:
 
 data-uri-to-buffer@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.0.tgz#b5db46aea50f6176428ac05b73be39a57701a64b"
+  resolved "https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-4.0.0.tgz"
   integrity sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==
 
 data-urls@^1.1.0:
@@ -3785,7 +3785,7 @@ fastq@^1.6.0:
 
 fetch-blob@^3.1.2, fetch-blob@^3.1.4:
   version "3.2.0"
-  resolved "https://registry.yarnpkg.com/fetch-blob/-/fetch-blob-3.2.0.tgz#f09b8d4bbd45adc6f0c20b7e787e793e309dcce9"
+  resolved "https://registry.npmjs.org/fetch-blob/-/fetch-blob-3.2.0.tgz"
   integrity sha512-7yAQpD2UMJzLi1Dqv7qFYnPbaPx7ZfFK6PiIxQ4PfkGPyNyl2Ugx+a/umUonmKqjhM4DnfbMvdX6otXq83soQQ==
   dependencies:
     node-domexception "^1.0.0"
@@ -3884,7 +3884,7 @@ form-data@~2.3.2:
 
 formdata-polyfill@^4.0.10:
   version "4.0.10"
-  resolved "https://registry.yarnpkg.com/formdata-polyfill/-/formdata-polyfill-4.0.10.tgz#24807c31c9d402e002ab3d8c720144ceb8848423"
+  resolved "https://registry.npmjs.org/formdata-polyfill/-/formdata-polyfill-4.0.10.tgz"
   integrity sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==
   dependencies:
     fetch-blob "^3.1.2"
@@ -5292,7 +5292,7 @@ no-case@^3.0.4:
 
 node-domexception@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/node-domexception/-/node-domexception-1.0.0.tgz#6888db46a1f71c0b76b3f7555016b63fe64766e5"
+  resolved "https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz"
   integrity sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==
 
 node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7:
@@ -5304,7 +5304,7 @@ node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7:
 
 node-fetch@^3.2.8:
   version "3.2.8"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-3.2.8.tgz#0d9516dcf43a758d78d6dbe538adf0b1f6a4944e"
+  resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-3.2.8.tgz"
   integrity sha512-KtpD1YhGszhntMpBDyp5lyagk8KIMopC1LEb7cQUAh7zcosaX5uK8HnbNb2i3NTQK3sIawCItS0uFC3QzcLHdg==
   dependencies:
     data-uri-to-buffer "^4.0.0"
@@ -6568,7 +6568,7 @@ symbol-tree@^3.2.2:
 
 sync-fetch@^0.4.1:
   version "0.4.1"
-  resolved "https://registry.yarnpkg.com/sync-fetch/-/sync-fetch-0.4.1.tgz#87b8684eef2fa25c96c4683ae308473a4e5c571f"
+  resolved "https://registry.npmjs.org/sync-fetch/-/sync-fetch-0.4.1.tgz"
   integrity sha512-JDtyFEvnKUzt1CxRtzzsGgkBanEv8XRmLyJo0F0nGkpCR8EjYmpOJJXz8GA/SWtlPU0nAYh0+CNMNnFworGyOA==
   dependencies:
     buffer "^5.7.1"
@@ -7446,7 +7446,7 @@ watchpack@^2.3.1:
 
 web-streams-polyfill@^3.0.3:
   version "3.2.1"
-  resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz#71c2718c52b45fd49dbeee88634b3a60ceab42a6"
+  resolved "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz"
   integrity sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==
 
 webidl-conversions@^3.0.0:
