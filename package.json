@@ -1,5 +1,5 @@
 {
-    "name": "@trading-strategy/svelte-notebook",
+    "name": "@trading-strategy/notebook-webcomponent",
     "version": "0.1.0",
     "private": true,
     "main": "./dist/notebook/build/notebook.js",
