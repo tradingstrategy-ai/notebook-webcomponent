@@ -4,7 +4,9 @@
 import { PageConfig/*, URLExt*/ } from '@jupyterlab/coreutils';
 
 import { JupyterLiteServer } from '@jupyterlite/server';
-import { KernelMessage } from '@jupyterlab/services';
+import { Contents,KernelMessage } from '@jupyterlab/services';
+
+import {Dialog} from '@jupyterlab/apputils';
 
 import {
   nullTranslator
@@ -29,6 +31,7 @@ import { Widget,Panel } from '@lumino/widgets';
 
 import { MathJaxTypesetter } from '@jupyterlab/mathjax2';
 import {ReactiveToolbar} from '@jupyterlab/apputils';
+
 
 import {
   NotebookModelFactory,
@@ -84,6 +87,59 @@ export interface NotebookOptions
 {
   initWheels?:string,
 };
+
+// autosaver class to save document if changed
+class AutoSaver
+{
+  notebook:any;
+  lastContent:string;
+  path:string;
+  serviceManager:any;
+  inSave:boolean;
+  lastSave:Date;
+  saveTimeout?:ReturnType<typeof setTimeout>;
+  constructor(serviceManager:any,notebook:any,path:string)
+  {
+    this.lastSave=new Date();
+    this.serviceManager=serviceManager;
+    this.path=path;
+    this.notebook=notebook;
+    this.lastContent=notebook.model.toString();
+    notebook.content.modelContentChanged.connect(this._on_change, this);
+    this.saveTimeout=undefined;
+  }
+
+  release()
+  {
+    if(this.saveTimeout)
+    {
+      clearTimeout(this.saveTimeout);
+      this.saveTimeout=undefined;
+    }
+    this.notebook.content.modelContentChanged.disconnect(this);
+  }
+
+  _autosave()
+  {
+    const contentNow:string=this.notebook.model.toString()
+    if(contentNow!==this.lastContent)
+    {      
+      this.notebook.context.save().then(()=>{console.log("Autosave done");this.lastContent=contentNow;});
+    }
+  }
+
+  _on_change(notebook:any)
+  {
+    if(this.saveTimeout)
+    {
+      clearTimeout(this.saveTimeout);
+    }
+    this.saveTimeout=setTimeout(()=>{this._autosave()},2000);
+  }
+}
+
+var _autoSaver:AutoSaver;
+
 
 export async function init(notebookSource:string,parentElement:HTMLElement,options:NotebookOptions): Promise<void> {
   const {initWheels}=options;
@@ -166,15 +222,13 @@ export async function init(notebookSource:string,parentElement:HTMLElement,optio
     docRegistry.addModelFactory(mFactory);
     docRegistry.addWidgetFactory(wFactory);
 
-
-
     const notebookURL:URL = new URL(notebookSource,document.location.href);
     const notebookResponse=await fetch(notebookURL.toString());
     const notebookText= await notebookResponse.text();
     const notebookPath=path.basename(notebookURL.pathname);
     //const contentType=mFactory.contentType;
     //const contentFormat=mFactory.fileFormat;
-    const fileContents={
+    const fileContents:Partial<Contents.IModel>={
       name:notebookPath,
       path:notebookPath,
       type:"file",
@@ -183,13 +237,70 @@ export async function init(notebookSource:string,parentElement:HTMLElement,optio
       format:"text"
     };
 
-    console.debug('Got source file!');
+    // first check two things
+    // 1) Does the base file need rewriting
+    // 2) Do we have an autosaved version of the file which is different from the (previous) base file
+    var updatedBaseFile:boolean=false;
+    var autosaveExists:boolean=false;
+    
+    try
+    {
+      const current=await serviceManager.contents.get(notebookPath,{content:true,format:"text",type:"file"});
+      if(current.content!=notebookText)
+      {
+        updatedBaseFile=true;
+      }
+    }catch
+    {
+      // no file - so this is an update
+      updatedBaseFile=true;
+    }
 
-    //@ts-ignore
-    const savedFile=await serviceManager.contents.save(notebookPath,fileContents);
-    console.log("Saved:",savedFile);
-    const nbWidget = docManager.open(notebookPath) as NotebookPanel;
+    const autosavePath="autosaved."+notebookPath;
+    // check if there is an autosave and if it is different to the current base file
+    try
+    {
+      await serviceManager.contents.get(autosavePath,{content:false});
+      console.debug("autosave exists");
+      autosaveExists=true;
+    }catch
+    {
+      // no autosave file, so don't worry about overwriting and just write a new one
+      console.debug("Making new autosave file");
+      autosaveExists=false;
+      await serviceManager.contents.save(autosavePath,fileContents);
+    }
 
+
+    if(updatedBaseFile )
+    {
+      // new version of base file -  need to write it
+//      //@ts-ignore
+      const savedFile=await serviceManager.contents.save(notebookPath,fileContents);
+      console.debug("Updated base file:",savedFile);
+      if(autosaveExists)
+      {
+        console.debug("Autosave exists - need to check whether to reload base");
+        const dialog = new Dialog({
+          title: 'This notebook has been updated on the website, load it and overwrite any changes you may have made?',
+          buttons: [Dialog.cancelButton({ label: 'Keep my changes' }),Dialog.okButton({ label: 'Reset my changes'})],
+          host: parentElement
+        });
+        const response=await(dialog.launch());
+        if(response.button.accept===true)
+        {
+          await serviceManager.contents.save("autosaved."+notebookPath,fileContents);
+          console.log("Reset autosave file")
+        }
+      }
+    }else
+    {
+      console.debug("Base file unchanged");
+    }
+
+    const nbWidget = docManager.open(autosavePath) as NotebookPanel;
+
+    _autoSaver=new AutoSaver(serviceManager,nbWidget,"autosaved."+notebookPath);
     const editor =
       nbWidget.content.activeCell && nbWidget.content.activeCell.editor;
     const model = new CompleterModel();
@@ -227,9 +338,9 @@ export async function init(notebookSource:string,parentElement:HTMLElement,optio
     buttons.forEach(x => {x.parent=null;x.dispose()});
 
     // setup toolbar, keyboard shortcuts etc.
-    SetupCommands(commands, nbWidget.toolbar, nbWidget, handler);
+    SetupCommands(commands, nbWidget.toolbar, nbWidget, handler,serviceManager,fileContents,autosavePath);
 
-    // add execution indicator at end of the thing
+    // add execution indicator at end of the toolbar
     nbWidget.toolbar.addItem("spacer",ReactiveToolbar.createSpacerItem());
     let indicator=ExecutionIndicator.createExecutionIndicatorItem(nbWidget,nullTranslator,undefined);
     nbWidget.toolbar.addItem("Kernel status:",indicator);
@@ -311,8 +422,11 @@ del _p
     {
       kernel.requestExecute(content, false, undefined);
     }
-
-    console.debug('Example started!');
+    console.debug('Notebook started!');
 }
 
-
+window.addEventListener("beforeunload",()=>
+  {
+    if(_autoSaver)_autoSaver.release();
+  }
+);

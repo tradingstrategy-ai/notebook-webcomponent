@@ -5,12 +5,13 @@ import { CommandRegistry } from '@lumino/commands';
 import { sessionContextDialogs } from '@jupyterlab/apputils';
 import { CompletionHandler } from '@jupyterlab/completer';
 import { NotebookActions, NotebookPanel } from '@jupyterlab/notebook';
+import {ServiceManager} from '@jupyterlab/services';
 import {
   NotebookSearchProvider,
   SearchInstance
 } from '@jupyterlab/documentsearch';
 
-import{stopIcon,runIcon,fastForwardIcon} from '@jupyterlab/ui-components';
+import{stopIcon,runIcon,fastForwardIcon,refreshIcon} from '@jupyterlab/ui-components';
 
 import {Toolbar,  CommandToolbarButton,
 } from '@jupyterlab/apputils';
@@ -26,7 +27,7 @@ const cmdIds = {
   startSearch: 'documentsearch:start-search',
   findNext: 'documentsearch:find-next',
   findPrevious: 'documentsearch:find-previous',
-  save: 'notebook:save',
+  revert: 'docmanager:reload',
   interrupt: 'notebook:interrupt-kernel',
   restart: 'notebook:restart-kernel',
   switchKernel: 'notebook:switch-kernel',
@@ -52,7 +53,10 @@ export const SetupCommands = (
   commands: CommandRegistry,
   toolbar: Toolbar,
   nbWidget: NotebookPanel,
-  handler: CompletionHandler
+  handler: CompletionHandler,
+  serviceManager: ServiceManager,
+  revertContents: any,
+  revertPath:string
 ) => {
   // Add commands.
   commands.addCommand(cmdIds.invoke, {
@@ -78,10 +82,6 @@ export const SetupCommands = (
         return commands.execute(cmdIds.select);
       }
     }
-  });
-  commands.addCommand(cmdIds.save, {
-    label: 'Save',
-    execute: () => nbWidget.context.save()
   });
 
   let searchInstance: SearchInstance | undefined;
@@ -219,38 +219,21 @@ export const SetupCommands = (
     label: 'Redo',
     execute: () => NotebookActions.redo(nbWidget.content)
   });
+  commands.addCommand(cmdIds.revert, {
+    label: 'Reload changes',
+    execute: async () => {
+      // copy base across
+      await serviceManager.contents.save(revertPath,revertContents);
+      await nbWidget.context.revert()
+    }
+  });
 
   toolbar.addItem('Restart python',new CommandToolbarButton({id:cmdIds.restart,commands:commands,icon:stopIcon,label:"Restart Python"}));
   toolbar.addItem('Run current code cell',new CommandToolbarButton({id:cmdIds.runAndAdvance,commands:commands,icon:runIcon,label:"Run cell"}));
   toolbar.addItem('Run all code cells',new CommandToolbarButton({id:cmdIds.runAll,commands:commands,icon:fastForwardIcon,label:"Run all code"}));
+  toolbar.addItem('Reload original code',new CommandToolbarButton({id:cmdIds.revert,commands:commands,icon:refreshIcon,label:"Reset to original code."}));
 
 
-
-/*  let category = 'Notebook Operations';
-  [
-    cmdIds.interrupt,
-    cmdIds.restart,
-    cmdIds.editMode,
-    cmdIds.commandMode,
-//    cmdIds.switchKernel,
-    cmdIds.startSearch,
-    cmdIds.findNext,
-    cmdIds.findPrevious
-  ].forEach(command => palette.addItem({ command, category }));
-
-  category = 'Notebook Cell Operations';
-  [
-    cmdIds.runAndAdvance,
-    cmdIds.run,
-    cmdIds.split,
-    cmdIds.merge,
-    cmdIds.selectAbove,
-    cmdIds.selectBelow,
-    cmdIds.extendAbove,
-    cmdIds.extendBelow,
-    cmdIds.undo,
-    cmdIds.redo
-  ].forEach(command => palette.addItem({ command, category }));*/
 
   const bindings = [
     {
@@ -272,11 +255,6 @@ export const SetupCommands = (
       selector: '.jp-Notebook',
       keys: ['Shift Enter'],
       command: cmdIds.runAndAdvance
-    },
-    {
-      selector: '.jp-Notebook',
-      keys: ['Accel S'],
-      command: cmdIds.save
     },
     {
       selector: '.jp-Notebook',

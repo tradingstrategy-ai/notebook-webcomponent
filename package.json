@@ -20,6 +20,7 @@
         "clean": "rimraf build **/build",
         "watch": "webpack --config webpack.config.watch.js",
         "postinstall": "npx patch-package;",
+        "serve": "cd dist && python -m http.server",
         "install":"echo doing install here",
         "preinstall": "node -e \"if (process.env.npm_execpath.indexOf('yarn') === -1) throw new Error('Use yarn for installing: https://yarnpkg.com/en/docs/install')\" && yarn policies set-version ^1.22.19 "
     },
@@ -34,6 +35,7 @@
         "@jupyterlab/application": "~3.4.3",
         "@jupyterlab/application-extension": "~3.4.3",
         "@jupyterlab/apputils-extension": "~3.4.3",
+        "@jupyterlab/apputils": "~3.4.3",
         "@jupyterlab/builder": "3.4.3",
         "@jupyterlab/cell-toolbar-extension": "~3.4.3",
         "@jupyterlab/celltags-extension": "~3.4.3",
