@@ -8,7 +8,7 @@
     "type": "module",
     "engines": {
         "yarn": ">=1.22.19",
-        "npm":"Build doesn't work with npm"
+        "npm": "Build doesn't work with npm"
       },
     "packageManager": "yarn@1.22.19",
     "files": [
