@@ -4,16 +4,11 @@
 |----------------------------------------------------------------------------*/
 
 body {
-  background: white;
+  background: initial;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-#main {
-  position: relative;
-  width: 100%;
+  overflow-x: initial;
+  overflow-y: initial;
 }
 
 .jp-NotebookPanel {
