@@ -90,10 +90,7 @@
       "@lumino/properties",
       "@lumino/signaling",
       "@lumino/virtualdom",
-      "@lumino/widgets",
-      "react",
-      "react-dom",
-      "yjs"
+      "@lumino/widgets"
     ],
     "mimeExtensions": {
       "@jupyterlab/javascript-extension": "",

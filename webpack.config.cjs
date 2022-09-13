@@ -83,7 +83,7 @@ function makeApp() {
     const worker = fetch(workerURL);
     const workerBody = worker.text();
     console.log('Copying service worker');
-    if (worker.status / 100 !== 2) {
+    if (worker.status !== 200) {
       throw new Error(`Couldn't download service worker from: ${workerURL}. Error: ${worker.status}`);
     }
     fs.writeFileSync(`${appBuildDir}/services.js`, workerBody);
