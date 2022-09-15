@@ -44,43 +44,45 @@ function overrideConfig(config: any): void {
 }
 
 class JupyterNotebookCommponent extends HTMLElement {
-  constructor() {
-    super();
+  // NOTE: currently no need to to override constructor()
+
+  // constructor() should NOT access or set any element properties; use connectedCallback instead.
+  // See: https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element-conformance
+  connectedCallback() {
+    const source = this.getAttribute('src');
+    if (!source) return;
+
+    const pyodideUrl = this.getAttribute('pyodideurl');
+    const workerUrl = this.getAttribute('serviceworkerurl');
+    const options: NotebookOptions = {
+      initWheels: this.getAttribute('initwheels') ?? undefined
+    };
 
     this.style.height = 'fit-content';
     this.style.width = '100%';
     this.style.display = 'block';
-    let source = this.getAttribute('src');
-    let initWheels = this.getAttribute('initwheels') || undefined;
-    let pyodideUrl = this.getAttribute('pyodideurl') || undefined;
-    let workerUrl = this.getAttribute('serviceworkerurl') || undefined;
-    if (source) {
-      const options: NotebookOptions = { initWheels };
 
-      const litePluginSettings: any = {};
+    const litePluginSettings: any = {};
 
-      if (pyodideUrl) {
-        litePluginSettings['@jupyterlite/pyolite-kernel-extension:kernel'] = { pyodideUrl };
-      }
-
-      if (workerUrl) {
-        if (workerUrl == 'disabled') {
-          litePluginSettings['@jupyterlite/server-extension:service-worker'] = { disabled: true };
-        } else {
-          litePluginSettings['@jupyterlite/server-extension:service-worker'] = { workerUrl };
-        }
-      }
-
-      const config = { litePluginSettings };
-
-      // need to override config before we import index.js, as config gets loaded
-      // during import of modules
-      overrideConfig(config);
-
-      import('./main').then((mod) => {
-        source && mod.init(source, this, options);
-      });
+    if (pyodideUrl) {
+      litePluginSettings['@jupyterlite/pyolite-kernel-extension:kernel'] = { pyodideUrl };
     }
+
+    if (workerUrl) {
+      if (workerUrl == 'disabled') {
+        litePluginSettings['@jupyterlite/server-extension:service-worker'] = { disabled: true };
+      } else {
+        litePluginSettings['@jupyterlite/server-extension:service-worker'] = { workerUrl };
+      }
+    }
+
+    // need to override config before we import index.js, as config gets loaded
+    // during import of modules
+    overrideConfig({ litePluginSettings });
+
+    import('./main').then((mod) => {
+      source && mod.init(source, this, options);
+    });
   }
 }
 
