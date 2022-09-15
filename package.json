@@ -82,6 +82,7 @@
         "html-webpack-plugin": "^5.5.0",
         "ignore-loader": "^0.1.2",
         "json-loader": "^0.5.7",
+        "lodash": "^4.17.21",
         "patch-package": "^6.4.7",
         "path": "^0.12.7",
         "postinstall-postinstall": "^2.1.0",

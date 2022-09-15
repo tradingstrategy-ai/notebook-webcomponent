@@ -1,6 +1,5 @@
 {
   "extends": "../../../tsconfigbase",
-  "compilerOptions": {
-  },
+  "compilerOptions": {},
   "include": ["*"]
 }

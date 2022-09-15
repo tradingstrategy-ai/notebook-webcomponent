@@ -54,6 +54,7 @@ import {
   standardRendererFactories as initialFactories,
   RenderMimeRegistry
 } from '@jupyterlab/rendermime';
+
 import { SetupCommands } from './commands';
 
 import * as path from 'path';
@@ -93,6 +94,7 @@ class AutoSaver {
   inSave: boolean;
   lastSave: Date;
   saveTimeout?: ReturnType<typeof setTimeout>;
+
   constructor(serviceManager: any, notebook: any, path: string) {
     this.lastSave = new Date();
     this.serviceManager = serviceManager;
@@ -133,18 +135,38 @@ class AutoSaver {
 
 var _autoSaver: AutoSaver;
 
+function removeToolbarWidgets(toolbar: Widget) {
+  // This returns a Lumino 1.x ArrayIterator, _not_ a JavaScript iterator
+  // see: https://lumino.readthedocs.io/en/1.x/api/algorithm/classes/arrayiterator.html
+  const widgetIterator = toolbar.children();
+
+  const widgets = [];
+  let widget;
+
+  // collect all the widgets into an array for future disposal
+  // NOTE: this fails if you dispose of them w/in the while loop
+  while ((widget = widgetIterator.next())) {
+    // skip ToolbarPopupOpener (we need to keep that one)
+    if (widget.constructor.name !== 'ToolbarPopupOpener') {
+      widgets.push(widget);
+    }
+  }
+
+  // dispose of the widgets
+  for (widget of widgets) {
+    widget.parent = null;
+    widget.dispose();
+  }
+}
+
 export async function init(
   notebookSource: string,
   parentElement: HTMLElement,
   options: NotebookOptions
 ): Promise<void> {
-  const { initWheels } = options;
-  let initWheelList: string[] = [];
-  if (initWheels) {
-    initWheelList = initWheels.split('\n');
-  }
+  const initWheelList = options.initWheels?.split('\n') || [];
 
-  //@ts-ignore
+  // @ts-ignore
   const jupyterLiteServer = new JupyterLiteServer({});
   let litePluginsToRegister: any = [];
   // Add the base serverlite extensions
@@ -318,16 +340,7 @@ export async function init(
   // Hide the widget when it first loads.
   completer.hide();
 
-  let buttons = [];
-  let c = nbWidget.toolbar.children();
-  for (let x = c.next(); x; x = c.next()) {
-    buttons.push(x);
-  }
-  buttons.pop(); // ignore the final element which is something to do with popups
-  buttons.forEach((x) => {
-    x.parent = null;
-    x.dispose();
-  });
+  removeToolbarWidgets(nbWidget.toolbar);
 
   // setup toolbar, keyboard shortcuts etc.
   SetupCommands(
@@ -369,7 +382,7 @@ export async function init(
     let all_divs = parentElement.getElementsByTagName('div');
     for (let d of all_divs) {
       if (
-        d.id == 'notebook_main' ||
+        d.id === 'notebook_main' ||
         d.classList.contains('jp-Cell') ||
         d.classList.contains('jp-Notebook') ||
         d.classList.contains('jp-NotebookPanel') ||
